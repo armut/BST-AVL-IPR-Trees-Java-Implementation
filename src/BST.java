@@ -53,15 +53,13 @@ public class BST<T extends Comparable<T>> {
     //TODO:Root'un silinmesi.
     //TODO: Tüm işlemlerde: Eğer ağaç boşsa.
     private void DeleteRoot() {
-        if(root.getLeft() != null && root.getRight() != null) {
+        if( root.getLeft() != null && root.getRight() != null ) {
             DeleteWith2Children(root);
-        }
-        else if(root.getLeft() != null && root.getRight() == null) {
+        } else if( root.getLeft() != null && root.getRight() == null ) {
             Node<T> tmp = root;
             root = tmp.getLeft();
             tmp = null;
-        }
-        else if(root.getLeft() == null && root.getRight() != null) {
+        } else if( root.getLeft() == null && root.getRight() != null ) {
             Node<T> tmp = root;
             root = getSuccessor(root.getKey());
             getSuccessor(tmp.getKey()).setKey(tmp.getKey());
@@ -70,35 +68,27 @@ public class BST<T extends Comparable<T>> {
     }
 
     private void DeleteWith2Children(Node<T> n) {
+        // Get the successor of n.
         Node<T> successor = getSuccessor(n.getKey());
-        Node<T> left = successor.getLeft();
-        Node<T> right = successor.getRight();
-        Node<T> parentOld = Search(successor.getKey());
-        boolean isNotRight = this.isLeft;
-        successor.setLeft(n.getLeft());
-        successor.setRight(n.getRight());
 
-        Node<T> tmp = n;
-        n = successor;
-        successor = tmp;
-        if(isNotRight)
-            parentOld.setLeft(successor);
-        else
-            parentOld.setRight(successor);
+        // Replace n's key with its successor.
+        n.setKey(successor.getKey());
 
-        successor.setLeft(left);
-        successor.setRight(right);
+        // Now, we have two nodes with the same key.
+        // Since we replaced successor with n, we must delete the duplicate of the successor.
+        // tmp is the root of n's right subtree, where the successor which we want to delete should be located.
+        Node<T> tmp = n.getRight();
 
-        Node<T> parentNew = Search(successor.getKey());
-        if(isLeft)
-            parentNew.setLeft(n);
-        else
-            parentNew.setRight(n);
-
-        tmp = null;
-        left = null;
-        right = null;
-        DeletePrivate(parentOld, isNotRight);
+        // If tmp has a left subtree,
+        if( tmp.getLeft() != null ) {
+            // then we want the left-most node of it.
+            while ( tmp.getLeft().getLeft() != null )
+                tmp = tmp.getLeft();
+            // Doing so, we are located to the duplicate node we want to delete and it is a left child.
+            DeletePrivate(tmp, true);
+        } else
+            // otherwise right child of n is the duplicate node and it is a right child.
+            DeletePrivate(n, false);
     }
 
     private void DeletePrivate(Node<T> parent, boolean isLeft) {
@@ -198,21 +188,21 @@ public class BST<T extends Comparable<T>> {
     private Node<T> getSuccessor(T key) {
         Node<T> parent = SearchPrivate(key, root);
 
-        if(isLeft) {
+        if( isLeft ) {
             Node<T> n = parent.getLeft();
-            if(n.getRight() != null)
+            if( n.getRight() != null )
                 return getMinimum(n.getRight());
             else
                 return parent;
         } else {
             Node<T> n = parent.getRight();
-            if(n.getRight() != null)
+            if( n.getRight() != null )
                 return getMinimum(n.getRight());
             else {
                 Node<T> tmp = new Node<>(parent.getKey(), parent.getLeft(), parent.getRight());
-                while(!isLeft) {
+                while ( !isLeft ) {
                     tmp = SearchPrivate(tmp.getKey(), root);
-                    if(tmp == root && tmp.getKey().compareTo(n.getKey()) < 0)
+                    if( tmp == root && tmp.getKey().compareTo(n.getKey()) < 0 )
                         // Which means n is the greatest.
                         return null;
                 }
@@ -226,7 +216,7 @@ public class BST<T extends Comparable<T>> {
     }
 
     private Node<T> getMinimum(Node<T> n) {
-        while(n.getLeft() != null)
+        while ( n.getLeft() != null )
             n = n.getLeft();
 
         return n;
@@ -237,19 +227,19 @@ public class BST<T extends Comparable<T>> {
     }
 
     private void PrintTreePrivate(Node<T> n) {
-        if(n.getLeft() != null)
+        if( n.getLeft() != null )
             PrintTreePrivate(n.getLeft());
 
-        if(n.getLeft() == null && n.getRight() == null)
+        if( n.getLeft() == null && n.getRight() == null )
             System.out.println(n.getKey() + " l:null" + " r:null");
-        else if(n.getLeft() != null && n.getRight() == null)
+        else if( n.getLeft() != null && n.getRight() == null )
             System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:null");
-        else if(n.getLeft() == null && n.getRight() != null)
+        else if( n.getLeft() == null && n.getRight() != null )
             System.out.println(n.getKey() + " l:null" + " r:" + n.getRight().getKey());
         else
             System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:" + n.getRight().getKey());
 
-        if(n.getRight() != null)
+        if( n.getRight() != null )
             PrintTreePrivate(n.getRight());
     }
 }

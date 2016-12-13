@@ -2,7 +2,7 @@ import com.sun.istack.internal.Nullable;
 
 public class BST<T extends Comparable<T>> {
     private Node<T> root;
-    private boolean isLeft;
+    private boolean isLeft, isRoot;
 
     public void Insert(T key) {
         InsertPrivate(key, root);
@@ -21,7 +21,7 @@ public class BST<T extends Comparable<T>> {
                     n.setRight(new Node<>(key, null, null));
                     //System.out.println(n.getKey() + "'s right -> " + key);
                 } else
-                    // Recursively call Insert on the right subtree.
+                    // Recursively call Insert on the right sub-tree.
                     InsertPrivate(key, n.getRight());
             }
             // If the key is equal to the root's key.
@@ -36,35 +36,36 @@ public class BST<T extends Comparable<T>> {
                     n.setLeft(new Node<>(key, null, null));
                     //System.out.println(n.getKey() + "'s left -> " + key);
                 } else
-                    // Recursively call Insert on the left subtree.
+                    // Recursively call Insert on the left sub-tree.
                     InsertPrivate(key, n.getLeft());
             }
         }
     }
 
     public void Delete(T key) {
-        Node<T> node = SearchPrivate(key, root);
-        if( node != null )
-            DeletePrivate(node, isLeft);
-        else
-            System.out.println("No such key in the tree.\n");
+        if( root == null )
+            System.out.println("The tree is empty.");
+        else {
+            Node<T> node = SearchPrivate(key, root);
+            boolean isLeft = this.isLeft;
+            if( node == root && isRoot )
+                DeleteRoot();
+            else if( node != null )
+                DeletePrivate(node, isLeft);
+            else
+                System.out.println("No such key in the tree.\n");
+        }
     }
 
-    //TODO:Root'un silinmesi.
-    //TODO: Tüm işlemlerde: Eğer ağaç boşsa.
     private void DeleteRoot() {
-        if( root.getLeft() != null && root.getRight() != null ) {
+        if( root.getLeft() != null && root.getRight() != null )
             DeleteWith2Children(root);
-        } else if( root.getLeft() != null && root.getRight() == null ) {
-            Node<T> tmp = root;
-            root = tmp.getLeft();
-            tmp = null;
-        } else if( root.getLeft() == null && root.getRight() != null ) {
-            Node<T> tmp = root;
-            root = getSuccessor(root.getKey());
-            getSuccessor(tmp.getKey()).setKey(tmp.getKey());
-            Delete(tmp.getKey());
-        }
+        else if( root.getLeft() != null && root.getRight() == null )
+            root = root.getLeft();
+        else if( root.getLeft() == null && root.getRight() != null )
+            root = root.getRight();
+        else
+            root = null;
     }
 
     private void DeleteWith2Children(Node<T> n) {
@@ -76,10 +77,10 @@ public class BST<T extends Comparable<T>> {
 
         // Now, we have two nodes with the same key.
         // Since we replaced successor with n, we must delete the duplicate of the successor.
-        // tmp is the root of n's right subtree, where the successor which we want to delete should be located.
+        // tmp is the root of n's right sub-tree, where the successor which we want to delete should be located.
         Node<T> tmp = n.getRight();
 
-        // If tmp has a left subtree,
+        // If tmp has a left sub-tree,
         if( tmp.getLeft() != null ) {
             // then we want the left-most node of it.
             while ( tmp.getLeft().getLeft() != null )
@@ -96,20 +97,17 @@ public class BST<T extends Comparable<T>> {
             Node<T> n = parent.getLeft();
             // Case 1: Deleting a leaf.
             if( n.getLeft() == null && n.getRight() == null ) {
-                System.out.println("The key " + n.getKey() + " (which was a leaf) has been deleted.\n");
                 parent.setLeft(null);
             }
             // Case 2: Deleting a node with one child.
             // Case 2.1: If the node is the left node.
             else if( n.getLeft() != null && n.getRight() == null ) {
                 parent.setLeft(n.getLeft());
-                System.out.println(n.getKey() + " is deleted.");
                 n = null;
             }
             //Case 2.2: If the node is the right node.
             else if( n.getLeft() == null && n.getRight() != null ) {
                 parent.setLeft(n.getRight());
-                System.out.println(n.getKey() + " is deleted.");
                 n = null;
             }
             // Case 3: Deleting a node with two children.
@@ -120,20 +118,17 @@ public class BST<T extends Comparable<T>> {
             Node<T> n = parent.getRight();
             // Case 1: Deleting a leaf.
             if( n.getLeft() == null && n.getRight() == null ) {
-                System.out.println("The key " + n.getKey() + " (which was a leaf) has been deleted.\n");
                 parent.setRight(null);
             }
             // Case 2: Deleting a node with one child.
             // Case 2.1: If the node is the left node.
             else if( n.getLeft() != null && n.getRight() == null ) {
                 parent.setRight(n.getLeft());
-                System.out.println(n.getKey() + " is deleted.");
                 n = null;
             }
             //Case 2.2: If the node is the right node.
             else if( n.getLeft() == null && n.getRight() != null ) {
                 parent.setRight(n.getRight());
-                System.out.println(n.getKey() + " is deleted.");
                 n = null;
             }
             // Case 3: Deleting a node with two children.
@@ -145,80 +140,109 @@ public class BST<T extends Comparable<T>> {
     }
 
     public Node<T> Search(T key) {
+        if( root == null )
+            return null;
+
         return SearchPrivate(key, root);
     }
 
     private Node<T> SearchPrivate(T key, Node<T> n) {
         // If the key we are looking up is the root's itself.
-        if( root.getKey() == key )
+        if( root.getKey() == key ) {
+            isRoot = true;
             return root;
+        }
 
         // If the key is the left child's key,
         if( n.getLeft() != null && key == n.getLeft().getKey() ) {
             isLeft = true;
+            isRoot = false;
             return n;
         }
         // Else if the key is the right child's key,
         else if( n.getRight() != null && key == n.getRight().getKey() ) {
             isLeft = false;
+            isRoot = false;
             return n;
         }
         // Else if the key is greater than n,
         else if( n.getRight() != null && key.compareTo(n.getKey()) > 0 ) {
-            // then look up the right subtree.
+            // then look up the right sub-tree.
             return SearchPrivate(key, n.getRight());
         }
         // Else if the key is less than n,
         else if( n.getLeft() != null && key.compareTo(n.getKey()) < 0 ) {
-            // then look up the left subtree.
+            // then look up the left sub-tree.
             return SearchPrivate(key, n.getLeft());
         }
 
         // If none of the above, then the key does not exist.
-        System.out.println("Couldn't find the key. Sorry. " + n.getKey());
         return null;
-    }
-
-    public void InOrderTraversal() {
-
     }
 
     @Nullable
-    //TODO: Root'un successor'unu bulmak.
-    private Node<T> getSuccessor(T key) {
-        Node<T> parent = SearchPrivate(key, root);
+    public Node<T> getSuccessor(T key) {
+        // Return null if the tree is empty.
+        if( root == null )
+            return null;
+        else {
+            // Get parent of the node with key 'key'
+            Node<T> parent = SearchPrivate(key, root);
 
-        if( isLeft ) {
-            Node<T> n = parent.getLeft();
-            if( n.getRight() != null )
-                return getMinimum(n.getRight());
-            else
-                return parent;
-        } else {
-            Node<T> n = parent.getRight();
-            if( n.getRight() != null )
-                return getMinimum(n.getRight());
-            else {
-                Node<T> tmp = new Node<>(parent.getKey(), parent.getLeft(), parent.getRight());
-                while ( !isLeft ) {
-                    tmp = SearchPrivate(tmp.getKey(), root);
-                    if( tmp == root && tmp.getKey().compareTo(n.getKey()) < 0 )
-                        // Which means n is the greatest.
-                        return null;
-                }
-                return tmp;
+            // If parent is null, then no such key.
+            if( parent == null )
+                return null;
+
+            // If parent's itself is root,
+            if( isRoot ) {
+                // then, root has no parent.
+                // Set n to parent.
+                Node<T> n = parent;
+
+                // If root has a right sub-tree,
+                if( n.getRight() != null )
+                    // we can get the minimum of it, which is the successor.
+                    return getMinimum(n.getRight());
+                else
+                    // Otherwise, n --which is root-- is the greatest. It has no successor.
+                    return n;
             }
+            // If the key we are looking its successor is a left child.
+            else if( isLeft ) {
+                // Same as the situation in root's. Except returning parent.
+                Node<T> n = parent.getLeft();
+                if( n.getRight() != null )
+                    return getMinimum(n.getRight());
+                else
+                    return parent;
+                // Else if the key we are looking its successor is a right child.
+            } else if( !isLeft ) {
+                Node<T> n = parent.getRight();
+                if( n.getRight() != null )
+                    return getMinimum(n.getRight());
+                else {
+                    // If n has no right sub-tree,
+                    // it is located on the left side of the root,
+                    if( n.getKey().compareTo(root.getKey()) < 0 ) {
+                        Node<T> tmp = parent;
+                        while ( !isLeft )
+                            tmp = Search(tmp.getKey());
+                        return tmp;
+                    } else
+                        // or n is the greatest.
+                        return n;
+                }
+            }
+
+            // If none of the above,
+            return null;
         }
     }
 
-    public T getPredecessor(T key) {
-        return null;
-    }
 
     private Node<T> getMinimum(Node<T> n) {
         while ( n.getLeft() != null )
             n = n.getLeft();
-
         return n;
     }
 
@@ -227,19 +251,25 @@ public class BST<T extends Comparable<T>> {
     }
 
     private void PrintTreePrivate(Node<T> n) {
-        if( n.getLeft() != null )
-            PrintTreePrivate(n.getLeft());
+        if( root == null )
+            System.out.println("The tree is empty.");
+        else {
+            if( n.getLeft() != null )
+                PrintTreePrivate(n.getLeft());
 
-        if( n.getLeft() == null && n.getRight() == null )
-            System.out.println(n.getKey() + " l:null" + " r:null");
-        else if( n.getLeft() != null && n.getRight() == null )
-            System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:null");
-        else if( n.getLeft() == null && n.getRight() != null )
-            System.out.println(n.getKey() + " l:null" + " r:" + n.getRight().getKey());
-        else
-            System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:" + n.getRight().getKey());
+            if( n.getLeft() == null && n.getRight() == null )
+                System.out.println(n.getKey() + " l:null" + " r:null");
+            else if( n.getLeft() != null && n.getRight() == null )
+                System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:null");
+            else if( n.getLeft() == null && n.getRight() != null )
+                System.out.println(n.getKey() + " l:null" + " r:" + n.getRight().getKey());
+            else
+                System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:" + n.getRight().getKey());
 
-        if( n.getRight() != null )
-            PrintTreePrivate(n.getRight());
+            if( n.getRight() != null )
+                PrintTreePrivate(n.getRight());
+        }
     }
+
+    //TODO: getPredecessor
 }

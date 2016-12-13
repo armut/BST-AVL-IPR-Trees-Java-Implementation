@@ -1,8 +1,8 @@
 import com.sun.istack.internal.Nullable;
 
 public class BST<T extends Comparable<T>> {
-    private Node<T> root;
-    private boolean isLeft, isRoot;
+    protected Node<T> root;
+    protected boolean isLeft, isRoot;
 
     public void Insert(T key) {
         InsertPrivate(key, root);

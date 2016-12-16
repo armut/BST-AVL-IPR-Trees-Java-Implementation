@@ -97,7 +97,11 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         SetHeight(root);
     }
 
-    //TODO:Bu ide'nin derdi ne ya hu.
+    protected void DeletePrivate(Node<T> parent, boolean isLeft) {
+        super.DeletePrivate(parent, isLeft);
+        SetHeight(parent);
+    }
+
     private void RightRotate(Node<T> x, Node<T> y) {
         // Right rotate x.
         Node<T> p = Search(x.getKey());

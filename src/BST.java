@@ -92,7 +92,7 @@ public class BST<T extends Comparable<T>> {
             DeletePrivate(n, false);
     }
 
-    private void DeletePrivate(Node<T> parent, boolean isLeft) {
+    protected void DeletePrivate(Node<T> parent, boolean isLeft) {
         if( isLeft ) {
             Node<T> n = parent.getLeft();
             // Case 1: Deleting a leaf.
@@ -137,6 +137,30 @@ public class BST<T extends Comparable<T>> {
             }
 
         }
+    }
+
+    public boolean SearchTree(T key) {
+        if( root == null ) {
+            System.out.println("The tree is empty.");
+            return false;
+        }
+
+        Node<T> n = SearchPrivate(key, root);
+        boolean isLeft = this.isLeft;
+
+        if( n == null ) {
+            System.out.println("The key " + key + " does not exist in the tree.");
+            return false;
+        }
+
+        if( isLeft ) {
+            System.out.println("Node with key " + n.getLeft().getKey() + " is found and its parent is " + n.getKey());
+            return true;
+        } else {
+            System.out.println("Node with key " + n.getRight().getKey() + " is found and its parent is " + n.getKey());
+            return false;
+        }
+
     }
 
     public Node<T> Search(T key) {

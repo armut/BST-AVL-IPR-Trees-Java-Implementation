@@ -246,16 +246,16 @@ public class BST<T extends Comparable<T>> {
         return n;
     }
 
-    public void PrintTree() {
-        PrintTreePrivate(root);
+    public void PrintInOrder() {
+        PrintInOrderPrivate(root);
     }
 
-    private void PrintTreePrivate(Node<T> n) {
+    private void PrintInOrderPrivate(Node<T> n) {
         if( root == null )
             System.out.println("The tree is empty.");
         else {
             if( n.getLeft() != null )
-                PrintTreePrivate(n.getLeft());
+                PrintInOrderPrivate(n.getLeft());
 
             if( n.getLeft() == null && n.getRight() == null )
                 System.out.println(n.getKey() + " l:null" + " r:null");
@@ -267,9 +267,20 @@ public class BST<T extends Comparable<T>> {
                 System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:" + n.getRight().getKey());
 
             if( n.getRight() != null )
-                PrintTreePrivate(n.getRight());
+                PrintInOrderPrivate(n.getRight());
         }
     }
-
+    //TODO:PrintTree.
+    boolean flag = true;
+    public void PrintTree(Node<T> n) {
+        int max = (int)Math.pow(2, root.getHeight() + 1) - 1;
+        int floor = root.getHeight();
+        if( n.getLeft() != null && n.getRight() != null ) {
+            //System.out.print(n.getLeft().getKey() + "  "  + n.getRight().getKey());
+            for(int i = 0; i <= floor; i++) {
+                System.out.println(i);
+            }
+        }
+    }
     //TODO: getPredecessor
 }

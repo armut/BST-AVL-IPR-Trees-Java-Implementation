@@ -50,8 +50,6 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
     }
 
     private void VerifyAVL(Node<T> p) {
-        //TODO: Döndürmeden sonra height'ların güncellenmesi.
-        SetHeight(p);
         Node<T> left = p.getLeft(), right = p.getRight();
         int balanceFactor;
 
@@ -84,13 +82,13 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         }
         // Else, p is a leaf. Nothing to do.
         // ...
-        SetHeight(p);
     }
 
     public void Insert(T key) {
         super.Insert(key);
         Node<T> p = Search(key);
         while ( p != root ) {
+            SetHeight(p);
             VerifyAVL(p);
             p = Search(p.getKey());
         }
@@ -112,6 +110,9 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
             p.setLeft(y);
         else
             p.setRight(y);
+
+        SetHeight(x);
+        SetHeight(y);
     }
 
     private void LeftRotate(Node<T> x, Node<T> y) {
@@ -126,5 +127,8 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
             p.setLeft(y);
         else
             p.setRight(y);
+
+        SetHeight(x);
+        SetHeight(y);
     }
 }

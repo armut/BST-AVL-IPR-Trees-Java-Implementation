@@ -101,6 +101,7 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
     protected void DeletePrivate(Node<T> parent, boolean isLeft) {
         super.DeletePrivate(parent, isLeft);
         SetHeight(parent);
+        //TODO: Buraya VerifyAVL gerekiyor.
     }
 
     protected void RightRotate(Node<T> x, Node<T> y) {

@@ -172,19 +172,19 @@ public class BST<T extends Comparable<T>> {
 
     private Node<T> SearchPrivate(T key, Node<T> n) {
         // If the key we are looking up is the root's itself.
-        if( root.getKey() == key ) {
+        if( root.getKey().compareTo(key) == 0 ) {
             isRoot = true;
             return root;
         }
 
         // If the key is the left child's key,
-        if( n.getLeft() != null && key == n.getLeft().getKey() ) {
+        if( n.getLeft() != null && key.compareTo(n.getLeft().getKey()) == 0 ) {
             isLeft = true;
             isRoot = false;
             return n;
         }
         // Else if the key is the right child's key,
-        else if( n.getRight() != null && key == n.getRight().getKey() ) {
+        else if( n.getRight() != null && key.compareTo(n.getRight().getKey()) == 0 ) {
             isLeft = false;
             isRoot = false;
             return n;

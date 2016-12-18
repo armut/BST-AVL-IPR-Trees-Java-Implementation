@@ -46,8 +46,6 @@ public class Main {
                 String key = reader.next();
                 while(!key.equals("exit")) {
                     tree.Insert(key);
-                    System.out.println();
-                    tree.PrintInOrder();
                     System.out.println("=======================");
                     System.out.print("Insert a key to tree: ");
                     key = reader.next();
@@ -61,7 +59,6 @@ public class Main {
                 String key = reader.next();
                 while(!key.equals("exit")) {
                     tree.Delete(key);
-                    tree.PrintInOrder();
                     System.out.println("=======================");
                     System.out.print("Delete a key from tree: ");
                     key = reader.next();

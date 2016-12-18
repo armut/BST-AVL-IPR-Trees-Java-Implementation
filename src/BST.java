@@ -282,13 +282,13 @@ public class BST<T extends Comparable<T>> {
                 PrintInOrderPrivate(n.getLeft());
 
             if( n.getLeft() == null && n.getRight() == null )
-                System.out.println(n.getKey() + " l:null" + " r:null");
+                System.out.println(n.getKey() + "\tl:null" + "\tr:null");
             else if( n.getLeft() != null && n.getRight() == null )
-                System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:null");
+                System.out.println(n.getKey() + "\tl:" + n.getLeft().getKey() + "\tr:null");
             else if( n.getLeft() == null && n.getRight() != null )
-                System.out.println(n.getKey() + " l:null" + " r:" + n.getRight().getKey());
+                System.out.println(n.getKey() + "\tl:null" + "\tr:" + n.getRight().getKey());
             else
-                System.out.println(n.getKey() + " l:" + n.getLeft().getKey() + " r:" + n.getRight().getKey());
+                System.out.println(n.getKey() + "\tl:" + n.getLeft().getKey() + "\tr:" + n.getRight().getKey());
 
             if( n.getRight() != null )
                 PrintInOrderPrivate(n.getRight());

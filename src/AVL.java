@@ -95,7 +95,7 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         }
         SetHeight(root);
         VerifyAVL(root);
-        SetHeight(root);
+        SetHeight(root); //TODO:Sanki bu satıra gerek yok gibi.
     }
 
     protected void DeletePrivate(Node<T> parent, boolean isLeft) {
@@ -103,13 +103,13 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         SetHeight(parent);
     }
 
-    private void RightRotate(Node<T> x, Node<T> y) {
+    protected void RightRotate(Node<T> x, Node<T> y) {
         super.RightRotate(x, y);
         SetHeight(x);
         SetHeight(y);
     }
 
-    private void LeftRotate(Node<T> x, Node<T> y) {
+    protected void LeftRotate(Node<T> x, Node<T> y) {
         super.LeftRotate(x, y);
         SetHeight(x);
         SetHeight(y);

@@ -22,9 +22,10 @@ public class Main {
         IPR<String> tree = new IPR<>();
         Integer[] nums = {60, 30, 90, 15, 35, 70, 95};
         String[] letters = {"m", "b", "a", "q", "z"};
+        String[] cities = { "Jefferson", "Hampton", "Greenville", "Ahoskie", "Gurnsey", "Boone", "Gusey", "Hamilton" };
 
         for( String i :
-                letters ) {
+                cities ) {
             tree.Insert(i);
         }
 
@@ -45,6 +46,7 @@ public class Main {
                 String key = reader.next();
                 while(!key.equals("exit")) {
                     tree.Insert(key);
+                    System.out.println();
                     tree.PrintInOrder();
                     System.out.println("=======================");
                     System.out.print("Insert a key to tree: ");

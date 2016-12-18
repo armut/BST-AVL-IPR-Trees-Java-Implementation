@@ -88,6 +88,7 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         super.Insert(key);
         Node<T> p = Search(key);
         while ( p != root ) {
+            //TODO: Olan bir key tekrar eklenince burada sıkıntı oluşuyor.
             SetHeight(p);
             VerifyAVL(p);
             p = Search(p.getKey());
@@ -103,35 +104,13 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
     }
 
     private void RightRotate(Node<T> x, Node<T> y) {
-        // Right rotate x.
-        Node<T> p = Search(x.getKey());
-        boolean isLeft = this.isLeft;
-        x.setLeft(y.getRight());
-        y.setRight(x);
-        if( x == root )
-            root = y;
-        else if( isLeft )
-            p.setLeft(y);
-        else
-            p.setRight(y);
-
+        super.RightRotate(x, y);
         SetHeight(x);
         SetHeight(y);
     }
 
     private void LeftRotate(Node<T> x, Node<T> y) {
-        // Left rotate x.
-        Node<T> p = Search(x.getKey());
-        boolean isLeft = this.isLeft;
-        x.setRight(y.getLeft());
-        y.setLeft(x);
-        if( x == root )
-            root = y;
-        else if( isLeft )
-            p.setLeft(y);
-        else
-            p.setRight(y);
-
+        super.LeftRotate(x, y);
         SetHeight(x);
         SetHeight(y);
     }

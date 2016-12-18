@@ -1,9 +1,6 @@
 
 class Node<T extends Comparable<T>> {
-    private int height = 0;
-
-    // 0 -> balanced node, 1 -> right heavy node, -1 -> left heavy node.
-    private byte orientation = 0;
+    private int height = 0, weight = 1;
     private Node<T> left, right;
     private T key;
 
@@ -45,15 +42,11 @@ class Node<T extends Comparable<T>> {
         this.key = key;
     }
 
-    public byte getOrientation() {
-        return orientation;
+    public int getWeight() {
+        return weight;
     }
 
-    public void incrementOrientation() {
-        this.orientation += 1;
-    }
-
-    public void decrementOrientation() {
-        this.orientation -= 1;
+    public void setWeight(int weight) {
+        this.weight = weight;
     }
 }

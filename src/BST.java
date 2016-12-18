@@ -294,14 +294,44 @@ public class BST<T extends Comparable<T>> {
                 PrintInOrderPrivate(n.getRight());
         }
     }
+
+    protected void RightRotate(Node<T> x, Node<T> y) {
+        // Right rotate x.
+        Node<T> p = Search(x.getKey());
+        boolean isLeft = this.isLeft;
+        x.setLeft(y.getRight());
+        y.setRight(x);
+        if( x == root )
+            root = y;
+        else if( isLeft )
+            p.setLeft(y);
+        else
+            p.setRight(y);
+    }
+
+    protected void LeftRotate(Node<T> x, Node<T> y) {
+        // Left rotate x.
+        Node<T> p = Search(x.getKey());
+        boolean isLeft = this.isLeft;
+        x.setRight(y.getLeft());
+        y.setLeft(x);
+        if( x == root )
+            root = y;
+        else if( isLeft )
+            p.setLeft(y);
+        else
+            p.setRight(y);
+    }
+
     //TODO:PrintTree.
     boolean flag = true;
+
     public void PrintTree(Node<T> n) {
-        int max = (int)Math.pow(2, root.getHeight() + 1) - 1;
+        int max = (int) Math.pow(2, root.getHeight() + 1) - 1;
         int floor = root.getHeight();
         if( n.getLeft() != null && n.getRight() != null ) {
             //System.out.print(n.getLeft().getKey() + "  "  + n.getRight().getKey());
-            for(int i = 0; i <= floor; i++) {
+            for( int i = 0; i <= floor; i++ ) {
                 System.out.println(i);
             }
         }

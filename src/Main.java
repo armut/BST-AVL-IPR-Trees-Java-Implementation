@@ -1,13 +1,11 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
  * armut on 11.12.2016.
  */
 public class Main {
-
     private static void menu() {
-        System.out.println("\nAVL Tree Java Implementation");
+        System.out.println("\nAVL/IPR Tree Java Implementation");
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("| [1] Print Tree           |");
         System.out.println("| [2] Insert key           |");
@@ -19,14 +17,14 @@ public class Main {
     }
 
     public static void main(String args[]) {
-        IPR<String> tree = new IPR<>();
-        Integer[] nums = {60, 30, 90, 15, 35, 70, 95};
-        String[] letters = {"m", "b", "a", "q", "z"};
+        BST<String> tree = new AVL<>();
+        //BST<String> tree = new IPR<>();
+        //Integer[] nums = {60, 30, 90, 15, 35, 70, 95};
         String[] cities = { "Jefferson", "Hampton", "Greenville", "Ahoskie", "Gurnsey", "Boone", "Gusey", "Hamilton" };
 
         for( String i :
                 cities ) {
-            tree.Insert(i);
+            tree.insert(i);
         }
 
         menu();
@@ -35,44 +33,44 @@ public class Main {
         while(true) {
             if( select == 1 ) {
                 System.out.println("\n======Print Tree======");
-                tree.PrintInOrder();
+                tree.printInOrder();
                 System.out.println("=======================");
                 menu();
                 select = reader.nextInt();
             } else if( select == 2 ) {
-                System.out.println("\n======Insert Operation======");
-                System.out.println("| [-1] Exit                |\n");
-                System.out.print("Insert a key to tree: ");
+                System.out.println("\n======insert Operation======");
+                System.out.println("| [-1] exit                |\n");
+                System.out.print("insert a key to tree: ");
                 String key = reader.next();
                 while(!key.equals("exit")) {
-                    tree.Insert(key);
+                    tree.insert(key);
                     System.out.println("=======================");
-                    System.out.print("Insert a key to tree: ");
+                    System.out.print("insert a key to tree: ");
                     key = reader.next();
                 }
                 menu();
                 select = reader.nextInt();
             } else if( select == 3 ) {
-                System.out.println("\n======Delete Operation======");
-                System.out.println("| [-1] Exit                |\n");
-                System.out.print("Delete a key from tree: ");
+                System.out.println("\n======delete Operation======");
+                System.out.println("| [-1] exit                |\n");
+                System.out.print("delete a key from tree: ");
                 String key = reader.next();
                 while(!key.equals("exit")) {
-                    tree.Delete(key);
+                    tree.delete(key);
                     System.out.println("=======================");
-                    System.out.print("Delete a key from tree: ");
+                    System.out.print("delete a key from tree: ");
                     key = reader.next();
                 }
                 menu();
                 select = reader.nextInt();
             } else if( select == 4 ) {
-                System.out.println("\n======Search Operation======");
-                System.out.println("| [-1] Exit                |\n");
-                System.out.print("Search a key in tree: ");
+                System.out.println("\n======search Operation======");
+                System.out.println("| [-1] exit                |\n");
+                System.out.print("search a key in tree: ");
                 String key = reader.next();
                 while(!key.equals("exit")) {
-                    tree.SearchTree(key);
-                    System.out.print("Search a key in tree: ");
+                    tree.searchTree(key);
+                    System.out.print("search a key in tree: ");
                     key = reader.next();
                 }
                 menu();

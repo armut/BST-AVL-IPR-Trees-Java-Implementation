@@ -1,7 +1,7 @@
 
 public class AVL<T extends Comparable<T>> extends BST<T> {
 
-    private void SetHeight(Node<T> n) {
+    private void setHeight(Node<T> n) {
         if( n.getLeft() == null && n.getRight() == null )
             n.setHeight(0);
         else if( n.getLeft() != null && n.getRight() == null )
@@ -22,13 +22,13 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         // If left's left child is heavier,
         if( leftHeight > rightHeight ) {
             // then, we need a single rotation.
-            RightRotate(p, left);
+            rightRotate(p, left);
         }
         // If left's right child is heavier,
         else if( leftHeight < rightHeight ) {
             // then, we need two single rotations (a.k.a double rotation)
-            LeftRotate(left, left.getRight());
-            RightRotate(p, p.getLeft());
+            leftRotate(left, left.getRight());
+            rightRotate(p, p.getLeft());
         }
     }
 
@@ -39,17 +39,17 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         // If right's left child is heavier,
         if( leftHeight > rightHeight ) {
             // then, we need a double rotation.
-            RightRotate(right, right.getLeft());
-            LeftRotate(p, p.getRight());
+            rightRotate(right, right.getLeft());
+            leftRotate(p, p.getRight());
         }
         // If right's right child is heavier,
         else if( leftHeight < rightHeight ) {
             // then, we need a single rotation.
-            LeftRotate(p, right);
+            leftRotate(p, right);
         }
     }
 
-    private void VerifyAVL(Node<T> p) {
+    private void verifyAVL(Node<T> p) {
         Node<T> left = p.getLeft(), right = p.getRight();
         int balanceFactor;
 
@@ -84,35 +84,39 @@ public class AVL<T extends Comparable<T>> extends BST<T> {
         // ...
     }
 
-    public void Insert(T key) {
-        super.Insert(key);
-        Node<T> p = Search(key);
+    public void insert(T key) {
+        super.insert(key);
+        Node<T> p = search(key);
         while ( p != root ) {
-            //TODO: Olan bir key tekrar eklenince burada sıkıntı oluşuyor.
-            SetHeight(p);
-            VerifyAVL(p);
-            p = Search(p.getKey());
+            setHeight(p);
+            verifyAVL(p);
+            p = search(p.getKey());
         }
-        SetHeight(root);
-        VerifyAVL(root);
-        SetHeight(root); //TODO:Sanki bu satıra gerek yok gibi.
+        setHeight(root);
+        verifyAVL(root);
     }
 
-    protected void DeletePrivate(Node<T> parent, boolean isLeft) {
-        super.DeletePrivate(parent, isLeft);
-        SetHeight(parent);
-        //TODO: Buraya VerifyAVL gerekiyor.
+    protected void deletePrivate(Node<T> parent, boolean isLeft) {
+        super.deletePrivate(parent, isLeft);
+        Node<T> p = parent;
+        while( p != root ) {
+            setHeight(p);
+            verifyAVL(p);
+            p = search(p.getKey());
+        }
+        setHeight(root);
+        verifyAVL(root);
     }
 
-    protected void RightRotate(Node<T> x, Node<T> y) {
-        super.RightRotate(x, y);
-        SetHeight(x);
-        SetHeight(y);
+    protected void rightRotate(Node<T> x, Node<T> y) {
+        super.rightRotate(x, y);
+        setHeight(x);
+        setHeight(y);
     }
 
-    protected void LeftRotate(Node<T> x, Node<T> y) {
-        super.LeftRotate(x, y);
-        SetHeight(x);
-        SetHeight(y);
+    protected void leftRotate(Node<T> x, Node<T> y) {
+        super.leftRotate(x, y);
+        setHeight(x);
+        setHeight(y);
     }
 }

@@ -1,5 +1,3 @@
-import com.sun.istack.internal.Nullable;
-
 public class BST<T extends Comparable<T>> {
     protected Node<T> root;
     protected boolean isLeft, isRoot;
@@ -202,7 +200,6 @@ public class BST<T extends Comparable<T>> {
         return null;
     }
 
-    @Nullable
     public Node<T> getSuccessor(T key) {
         // Return null if the tree is empty.
         if( root == null )

@@ -1,3 +1,6 @@
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class BST<T extends Comparable<T>> {
     protected Node<T> root;
     protected boolean isLeft, isRoot;
@@ -267,6 +270,7 @@ public class BST<T extends Comparable<T>> {
 
     public void printInOrder() {
         printInOrderPrivate(root);
+        printDot(root);
     }
 
     private void printInOrderPrivate(Node<T> n) {
@@ -318,6 +322,48 @@ public class BST<T extends Comparable<T>> {
             p.setRight(y);
     }
 
-    //TODO:PrintTree.
+    private void printDotNull(T key, int count) {
+        output += "   null" + count + " [shape=point];\n";
+        output += "   " + key + " -> null" + count +";\n";
+    }
+
+    int count = 0;
+    String output = "";
+    private void printDotAux(Node<T> n) {
+        if( n.getLeft() != null ) {
+            output += "   " + n.getKey() + " -> " + n.getLeft().getKey() + ";\n";
+            printDotAux(n.getLeft());
+        } else
+            printDotNull(n.getKey(), count++);
+
+        if( n.getRight() != null ) {
+            output += "   " + n.getKey() + " -> " + n.getRight().getKey() + ";\n";
+            printDotAux(n.getRight());
+        } else
+            printDotNull(n.getKey(), count++);
+    }
+
+    private void printDot(Node<T> tree) {
+        output = "digraph tree {\n";
+        output += "   node [fontname=\"Arial\"];\n";
+
+        if( tree == null )
+            output += "\n";
+        else if( tree.getLeft() == null && tree.getRight() == null )
+            output += "   " + tree.getKey() + ";\n";
+        else
+            printDotAux(tree);
+
+        output += "}\n";
+        try {
+            PrintWriter wr = new PrintWriter("tree.dot", "UTF-8");
+            wr.print(output);
+            wr.close();
+        } catch( IOException e) {
+            System.out.println("Error.");
+        }
+        count = 0;
+        output = "";
+    }
     //TODO: getPredecessor
 }

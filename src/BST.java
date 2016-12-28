@@ -270,7 +270,10 @@ public class BST<T extends Comparable<T>> {
 
     public void printInOrder() {
         printInOrderPrivate(root);
-        printDot(root);
+    }
+
+    public void drawTree(String path) {
+        printDot(root, path);
     }
 
     private void printInOrderPrivate(Node<T> n) {
@@ -343,7 +346,7 @@ public class BST<T extends Comparable<T>> {
             printDotNull(n.getKey(), count++);
     }
 
-    private void printDot(Node<T> tree) {
+    private void printDot(Node<T> tree, String path) {
         output = "digraph tree {\n";
         output += "   node [fontname=\"Arial\"];\n";
 
@@ -356,7 +359,7 @@ public class BST<T extends Comparable<T>> {
 
         output += "}\n";
         try {
-            PrintWriter wr = new PrintWriter("tree.dot", "UTF-8");
+            PrintWriter wr = new PrintWriter(path, "UTF-8");
             wr.print(output);
             wr.close();
         } catch( IOException e) {
@@ -365,5 +368,6 @@ public class BST<T extends Comparable<T>> {
         count = 0;
         output = "";
     }
+
     //TODO: getPredecessor
 }

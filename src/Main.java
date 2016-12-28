@@ -34,6 +34,7 @@ public class Main {
             if( select == 1 ) {
                 System.out.println("\n======Print Tree======");
                 tree.printInOrder();
+                tree.drawTree("tree.dot");
                 System.out.println("=======================");
                 menu();
                 select = reader.nextInt();

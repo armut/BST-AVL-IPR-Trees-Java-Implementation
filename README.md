@@ -60,6 +60,17 @@ digraph tree {
 
 ## Screenshots
 
+Here is an example tree with string values:
+
+![Tree with string keys](/ss/tree1.png?raw=true)
+
+Keys are added in this order: "Jefferson", "Hampton", "Greenville", "Ahoskie", "Gurnsey", "Boone", "Gusey", "Hamilton"
+
+Another example with integer values:
+
+![Tree with integer keys](/ss/tree2.png?raw=true)
+
+Keys are added in this order: 60, 30, 90, 15, 35, 70, 95
 
 ## Compiling/Running the Program
 
